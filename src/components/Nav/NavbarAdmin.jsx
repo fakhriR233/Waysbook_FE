@@ -1,9 +1,23 @@
 import { Avatar, Dropdown } from "flowbite-react";
-import React from "react";
+import React, { useContext } from "react";
 import { FaBook, FaRocketchat, FaSignOutAlt } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import WaysbookLogo from "../../assets/WaysbookLogo.png";
+import { UserContext } from "../../context/userContext";
 
 const NavbarAdmin = () => {
+  let Navigate = useNavigate();
+
+  const [state, dispatch] = useContext(UserContext);
+
+  function handleLogout(e) {
+    e.preventDefault();
+    console.log(state);
+    dispatch({
+      type: "LOGOUT",
+    });
+    Navigate("/");
+  }
   return (
     <div>
       <nav className="bg-white px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0">
@@ -39,26 +53,38 @@ const NavbarAdmin = () => {
               >
                 <div>
                   <Dropdown.Item>
-                    <div className="mx-2">
-                      {" "}
-                      <FaBook />{" "}
-                    </div>
-                    <p className="font-bold text-md">Add Book</p>
+                    <Link to="/addbook">
+                      <div className="flex">
+                        <div className="mx-2">
+                          {" "}
+                          <FaBook />{" "}
+                        </div>
+                        <p className="font-bold text-md">Add Book</p>
+                      </div>
+                    </Link>
                   </Dropdown.Item>
                   <Dropdown.Item>
-                    <div className="mx-2">
-                      {" "}
-                      <FaRocketchat />{" "}
-                    </div>
-                    <p className="font-bold text-md">Complain</p>
+                    <Link to="">
+                      <div className="flex">
+                        <div className="mx-2">
+                          {" "}
+                          <FaRocketchat />{" "}
+                        </div>
+                        <p className="font-bold text-md">Complain</p>
+                      </div>
+                    </Link>
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item>
-                    <div className="mx-2">
-                      {" "}
-                      <FaSignOutAlt style={{ color: "red" }} />{" "}
-                    </div>
-                    <p className="font-bold text-md">Logout</p>
+                    <button onClick={handleLogout}>
+                      <div className="flex">
+                        <div className="mx-2">
+                          {" "}
+                          <FaSignOutAlt style={{ color: "red" }} />{" "}
+                        </div>
+                        <p className="font-bold text-md">Logout</p>
+                      </div>
+                    </button>
                   </Dropdown.Item>
                 </div>
               </Dropdown>

@@ -1,17 +1,98 @@
-import React from "react";
+import { Alert } from "flowbite-react";
+import React, { useState } from "react";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { API } from "../../config/api";
 
 const AddBook = () => {
+  let Navigate = useNavigate();
+
+  const title = " Admin Add Movies";
+  document.title = "Dumbflix | " + title;
+
+  const [form, setForm] = useState({
+    Title: "",
+    PublicationDate: "",
+    Pages: "",
+    Author: "",
+    ISBN: "",
+    Price: "",
+    Description: "",
+    Attachment: "",
+    Thumbnail: "",
+  });
+
+  const [message, setMessage] = useState(null);
+
+  const handleChange = (e) => {
+    console.log("test onchange");
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.type === "file" ? e.target.files : e.target.value,
+    });
+    console.log(form);
+  };
+
+  const addButtonHandler = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.set(
+        "Attachment",
+        form?.Attachment[0],
+        form?.Attachment[0]?.name
+      );
+      formData.set("Thumbnail", form?.Thumbnail[0], form?.Thumbnail[0]?.name);
+      formData.set("Title", form.Title);
+      formData.set("Author", form.Author);
+      formData.set("Description", form.Description);
+      formData.set("PublicationDate", form.PublicationDate);
+      formData.set("Pages", form.Pages);
+      formData.set("ISBN", form.ISBN);
+      formData.set("Price", form.Price);
+
+      console.log(form);
+      // Configuration Content-type
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      };
+
+      // Data body
+      // const body = JSON.stringify(formData);
+
+      // Insert data user to database
+      const response = await API.post("/book", formData, config);
+      console.log(response);
+      Navigate("/listtransactions");
+
+      // Handling response here
+    } catch (error) {
+      const alert = (
+        <Alert variant="danger" className="py-1">
+          Failed
+        </Alert>
+      );
+      setMessage(alert);
+      console.log(error);
+    }
+  });
   return (
     <div className="my-28 mx-28">
-      <form>
+      {message && message}
+      <form onSubmit={(e) => addButtonHandler.mutate(e)}>
         <div class="relative z-0 mb-6 w-full group">
           <input
             type="text"
-            name="floating_title"
+            name="Title"
             id="floating_title"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required=""
+            onChange={handleChange}
           />
           <label
             for="floating_title"
@@ -23,11 +104,29 @@ const AddBook = () => {
         <div class="relative z-0 mb-6 w-full group">
           <input
             type="text"
-            name="floating_publication_date"
+            name="Author"
+            id="floating_author"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            required=""
+            onChange={handleChange}
+          />
+          <label
+            for="floating_author"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Author
+          </label>
+        </div>
+        <div class="relative z-0 mb-6 w-full group">
+          <input
+            type="text"
+            name="PublicationDate"
             id="floating_publication_date"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required=""
+            onChange={handleChange}
           />
           <label
             for="floating_publication_date"
@@ -39,11 +138,12 @@ const AddBook = () => {
         <div class="relative z-0 mb-6 w-full group">
           <input
             type="number"
-            name="floating_pages"
+            name="Pages"
             id="floating_pages"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required=""
+            onChange={handleChange}
           />
           <label
             for="floating_pages"
@@ -54,12 +154,13 @@ const AddBook = () => {
         </div>
         <div class="relative z-0 mb-6 w-full group">
           <input
-            type="text"
-            name="floating_ISBN"
+            type="number"
+            name="ISBN"
             id="floating_ISBN"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required=""
+            onChange={handleChange}
           />
           <label
             for="floating_ISBN"
@@ -71,11 +172,12 @@ const AddBook = () => {
         <div class="relative z-0 mb-6 w-full group">
           <input
             type="number"
-            name="price"
+            name="Price"
             id="floating_price"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required=""
+            onChange={handleChange}
           />
           <label
             for="floating_price"
@@ -86,11 +188,12 @@ const AddBook = () => {
         </div>
         <div class="relative z-0 mb-6 w-full group">
           <textarea
-            name="desc"
+            name="Description"
             id="floating_desc"
             rows="4"
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="About Book"
+            onChange={handleChange}
           />
         </div>
         <div class="grid md:grid-cols-2 md:gap-6">
@@ -106,6 +209,8 @@ const AddBook = () => {
               aria-describedby="book_file_help"
               id="book_file"
               type="file"
+              name="Attachment"
+              onChange={handleChange}
             />
             <div
               class="mt-1 text-sm text-gray-500 dark:text-gray-300"
@@ -126,6 +231,8 @@ const AddBook = () => {
               aria-describedby="book_cover_help"
               id="book_cover"
               type="file"
+              name="Thumbnail"
+              onChange={handleChange}
             />
             <div
               class="mt-1 text-sm text-gray-500 dark:text-gray-300"
