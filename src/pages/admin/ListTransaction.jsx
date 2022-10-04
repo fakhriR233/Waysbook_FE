@@ -1,6 +1,19 @@
 import React from "react";
+import { useQuery } from "react-query";
+import { API } from "../../config/api";
 
 const ListTransaction = () => {
+  let { data: transactions, refetch } = useQuery("bookCache", async () => {
+    // const config = {
+    //   method: "GET",
+    //   headers: {
+    //     Authorization: "Bearer " + localStorage.token,
+    //   },
+    // };
+    const response = await API.get("/transactions");
+    console.log(response.data.data);
+    return response.data.data;
+  });
   return (
     <div className="mt-32 mx-32">
       <p> LIST TRANSACTION WOI</p>
@@ -16,10 +29,10 @@ const ListTransaction = () => {
                 Users
               </th>
               <th scope="col" className="py-3 px-6 text-red-600">
-                Evidence of Payment
+                Books Purchased
               </th>
               <th scope="col" className="py-3 px-6 text-red-600">
-                Book Purchased
+                ID Transactions
               </th>
               <th scope="col" className="py-3 px-6 text-red-600">
                 Total Payment
@@ -29,34 +42,63 @@ const ListTransaction = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-              <th
-                scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                1
-              </th>
-              <td className="py-4 px-6">Mr. Rogers</td>
-              <td className="py-4 px-6  text-green-500">BCA.jpeg</td>
-              <td className="py-4 px-6">Book</td>
-              <td className="py-4 px-6  text-green-500">$2999</td>
-              <td className="py-4 px-6 text-green-500">Success</td>
-            </tr>
-            <tr className="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700">
-              <th
-                scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                2
-              </th>
-              <td className="py-4 px-6">Mr. White</td>
-              <td className="py-4 px-6  text-green-500">Bank of America.png</td>
-              <td className="py-4 px-6">Book 2</td>
-              <td className="py-4 px-6 text-green-500">$1999</td>
-              <td className="py-4 px-6 text-red-600">Failed</td>
-            </tr>
-          </tbody>
+          {transactions?.length !== 0 ? (
+            <>
+              <tbody>
+                {transactions?.map((item, index) => {
+                  return (
+                    <>
+                      <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {index + 1}
+                        </th>
+                        <td className="py-4 px-6">{item?.user?.fullname}</td>
+                        <td className="py-4 px-6  text-green-500">
+                          {item?.cart?.map((booke, idx) => {
+                            return (
+                              <>
+                                <p>{booke?.book?.title}</p>
+                              </>
+                            );
+                          })}
+                        </td>
+                        <td className="py-4 px-6">{item?.id}</td>
+                        <td className="py-4 px-6  text-green-500">
+                          {item?.cart?.map((big, index) => {
+                            return (
+                              <>
+                                <p className="text-green-500">
+                                  {big?.subtotal}
+                                </p>
+                              </>
+                            );
+                          })}
+                        </td>
+                        <td
+                          className={
+                            item?.status == "success"
+                              ? "py-4 px-6 text-green-500"
+                              : "py-4 px-6 text-red-500"
+                          }
+                        >
+                          {item?.status}
+                        </td>
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="p-5 text-2xl font-bold"> No Transactions !</p>
+              </div>
+            </>
+          )}
         </table>
       </div>
     </div>

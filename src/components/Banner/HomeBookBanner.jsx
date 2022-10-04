@@ -14,8 +14,8 @@ const exImg =
   "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80";
 
 const HomeBookBanner = () => {
-  const title = "Shop";
-  document.title = "DumbMerch | " + title;
+  const title = "Home";
+  document.title = "Waysbook | " + title;
 
   // Fetching product data from database
   let { data: book, refetch } = useQuery("bookCache", async () => {
@@ -72,15 +72,15 @@ const HomeBookBanner = () => {
                         src={item?.thumbnail}
                         alt="example"
                       />
-                      <div className="flex flex-col justify-between p-5 leading-normal text-justify">
+                      <div className="flex flex-col justify-between p-5 leading-normal text-left">
                         <h5 className="my-5 text-2xl font-bold tracking-tight text-white-900 dark:text-black">
                           {item?.title}
                         </h5>
                         <p className="mb-3 font-normal text-gray dark:text-gray-400">
                           By {item?.author}
                         </p>
-                        <p className="mb-3 font-normal text-gray-400 dark:text-black">
-                          Description lorem ipsum dolor sit amet
+                        <p className="mb-3 font-normal text-gray-400 dark:text-black line-clamp-3">
+                          {item?.description}
                         </p>
                         <p className="my-2 font-normal text-green-300 dark:text-green-500">
                           Rp. {item?.price}

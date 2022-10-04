@@ -12,6 +12,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { API, setAuthToken } from "./config/api";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/userContext";
+import PurchasedBookDetail from "./components/Profile/PurchasedBookDetail";
 
 function App() {
   // const isAdmin = false;
@@ -82,6 +83,11 @@ function App() {
         <Routes>
           <Route path="/" exact element={<HomePages />} />
           <Route path="/book-detail/:id" exact element={<BookDetail />} />
+          <Route
+            path="/book-purchased/:id"
+            exact
+            element={<PurchasedBookDetail />}
+          />
           <Route path="/profile" exact element={<Profile />} />
           <Route path="/cart" exact element={<Cart />} />
           <Route path="/complain" exact element={<ComplainUser />} />

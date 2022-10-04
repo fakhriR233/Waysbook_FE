@@ -1,4 +1,5 @@
-import { Alert } from "flowbite-react";
+// import { Alert } from "flowbite-react";
+import { Alert } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -8,6 +9,7 @@ import { API } from "../../config/api";
 const BookDetail = () => {
   let { id } = useParams();
   // let Navigate = useNavigate();
+  const [show, setShow] = useState(true);
 
   const [alert, setAlert] = useState(null);
 
@@ -55,8 +57,30 @@ const BookDetail = () => {
       });
 
       await API.post("/cart", body, config);
+      const success = (
+        <Alert
+          color="green"
+          show={show}
+          dismissible={{
+            onClose: () => setShow(false),
+          }}
+        >
+          Failed Add to Cart
+        </Alert>
+      );
+      setAlert(success);
     } catch (error) {
-      const alert = <Alert color="failure">Failed add to Cart</Alert>;
+      const alert = (
+        <Alert
+          color="red"
+          show={show}
+          dismissible={{
+            onClose: () => setShow(false),
+          }}
+        >
+          Failed Add to Cart
+        </Alert>
+      );
       setAlert(alert);
       console.log(error);
     }

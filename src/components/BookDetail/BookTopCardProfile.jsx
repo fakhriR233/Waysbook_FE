@@ -1,9 +1,6 @@
 import React from "react";
 
-// const imgDum =
-//   "https://images.unsplash.com/photo-1529485726363-95c8d62f656f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80";
-
-const BookTopCard = ({ book }) => {
+const BookTopCardProfile = ({ book }) => {
   return (
     <div>
       <div className="mt-24 mx-auto">
@@ -63,4 +60,4 @@ const BookTopCard = ({ book }) => {
   );
 };
 
-export default BookTopCard;
+export default BookTopCardProfile;

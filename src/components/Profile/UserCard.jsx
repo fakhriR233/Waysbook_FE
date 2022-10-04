@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaAddressCard, FaPhone, FaTransgender } from "react-icons/fa";
+import { API } from "../../config/api";
 
 const userimg =
   "https://images.unsplash.com/photo-1604004555489-723a93d6ce74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80";
 
 const UserCard = () => {
+  const [user, setUser] = useState();
+  const checkUser = async () => {
+    try {
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.token,
+        },
+      };
+      const response = await API.get("/check-auth", config);
+      setUser(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
   return (
     <div>
       <p className="text-3xl font-serif font-bold my-9">Profile</p>
@@ -16,7 +36,7 @@ const UserCard = () => {
               <HiOutlineMail className="my-2" size={30} />
             </p>
             <div>
-              <p className="text-md font-bold"> Kiri@mail.com </p>
+              <p className="text-md font-bold"> {user?.email} </p>
               <p className="text-sm text-gray-500 dark:text-gray-200">
                 {" "}
                 Email{" "}
@@ -28,7 +48,14 @@ const UserCard = () => {
               <FaTransgender className="my-2" size={30} />
             </p>
             <div>
-              <p className="text-md font-bold"> Female </p>
+              <p className="text-md font-bold">
+                {" "}
+                {user?.gender !== "" ? (
+                  <>{user?.gender}</>
+                ) : (
+                  <p>No Gender Yet! Perhaps? a Reptile?</p>
+                )}{" "}
+              </p>
               <p className="text-sm text-gray-500 dark:text-gray-200">
                 {" "}
                 Gender{" "}
@@ -40,7 +67,14 @@ const UserCard = () => {
               <FaPhone className="my-2" size={29} />
             </p>
             <div>
-              <p className="text-md font-bold"> 08121378 </p>
+              <p className="text-md font-bold">
+                {" "}
+                {user?.phone !== "" ? (
+                  <>{user?.phone}</>
+                ) : (
+                  <p>(Phone Area) + Your Phone Number Here</p>
+                )}{" "}
+              </p>
               <p className="text-sm text-gray-500 dark:text-gray-200">
                 {" "}
                 Mobile Phone{" "}
@@ -52,7 +86,14 @@ const UserCard = () => {
               <FaAddressCard className="my-2" size={29} />
             </p>
             <div>
-              <p className="text-md font-bold"> 31 Doctor Street Florida </p>
+              <p className="text-md font-bold">
+                {" "}
+                {user?.address !== "" ? (
+                  <>{user?.address}</>
+                ) : (
+                  <p>No Address Yet!</p>
+                )}{" "}
+              </p>
               <p className="text-sm text-gray-500 dark:text-gray-200">
                 {" "}
                 Address{" "}

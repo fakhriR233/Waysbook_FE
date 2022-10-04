@@ -4,6 +4,8 @@ import TextBanner from "../../components/Banner/TextBanner";
 import ListBook from "../../components/ListBook/ListBook";
 
 const HomePages = () => {
+  const title = "Home";
+  document.title = "Waysbook | " + title;
   return (
     <div>
       <header className="App-header">

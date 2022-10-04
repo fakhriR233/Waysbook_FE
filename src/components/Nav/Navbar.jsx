@@ -1,5 +1,5 @@
 import { Avatar, Dropdown } from "flowbite-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FaBook,
   FaCartPlus,
@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import WaysbookLogo from "../../assets/WaysbookLogo.png";
+import { API } from "../../config/api";
 import { UserContext } from "../../context/userContext";
 import ModalLogin from "../utilities/ModalLogin";
 import ModalRegister from "../utilities/ModalRegister";
@@ -53,6 +54,20 @@ const Navbar = ({ isLogin }) => {
     Navigate("/");
   }
 
+  const [dataCart, setDataCart] = useState([]);
+
+  useEffect(() => {
+    const dataCart = async () => {
+      try {
+        const response = await API.get("/cart-id");
+        setDataCart(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    dataCart();
+  }, [setDataCart]);
+
   return (
     <div>
       <ModalLogin
@@ -96,7 +111,11 @@ const Navbar = ({ isLogin }) => {
                   </button>
                   <div className="mt-2 mr-3 w-4">
                     <p className="text-xs bg-red-600 text-white rounded-md px-1 font-bold">
-                      2
+                      {dataCart?.length !== 0 ? (
+                        <>{dataCart?.length}</>
+                      ) : (
+                        <>0</>
+                      )}
                     </p>
                   </div>
                   <Dropdown

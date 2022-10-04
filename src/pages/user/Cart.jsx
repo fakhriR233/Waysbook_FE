@@ -35,7 +35,7 @@ const Cart = () => {
   });
 
   let Total = 0;
-  dataCart.forEach((item) => {
+  dataCart?.forEach((item) => {
     Total += item.book?.price * item?.qty;
   });
 
@@ -48,6 +48,7 @@ const Cart = () => {
   const data = {
     status: "pending",
     totalPayment: Total,
+    Total: Total,
   };
 
   const handleSubmit = useMutation(async (e) => {
