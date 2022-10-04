@@ -100,6 +100,7 @@ const ModalRegister = ({ show, setShow, showRegister, setShowRegister }) => {
                 <TextInput
                   id="email"
                   placeholder="Email"
+                  name="email"
                   required={true}
                   onChange={handleChange}
                 />
@@ -108,6 +109,7 @@ const ModalRegister = ({ show, setShow, showRegister, setShowRegister }) => {
                 <TextInput
                   id="password"
                   type="password"
+                  name="password"
                   placeholder="Password"
                   required={true}
                   onChange={handleChange}
@@ -116,6 +118,7 @@ const ModalRegister = ({ show, setShow, showRegister, setShowRegister }) => {
               <div>
                 <TextInput
                   id="fullname"
+                  name="fullname"
                   placeholder="Full Name"
                   required={true}
                   onChange={handleChange}

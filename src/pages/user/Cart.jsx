@@ -20,7 +20,7 @@ const Cart = () => {
   useEffect(() => {
     const dataCart = async () => {
       try {
-        const response = await API.get("cart-id");
+        const response = await API.get("/cart-id");
         setDataCart(response.data.data);
       } catch (error) {
         console.log(error);
@@ -47,7 +47,7 @@ const Cart = () => {
 
   const data = {
     status: "pending",
-    subtotal: Total,
+    totalPayment: Total,
   };
 
   const handleSubmit = useMutation(async (e) => {
@@ -169,6 +169,13 @@ const Cart = () => {
                 {Rp.convert(Total)}
               </div>
             </div>
+            <button
+              type="button"
+              onClick={(e) => handleSubmit.mutate(e)}
+              className="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            >
+              Buy
+            </button>
           </div>
         </div>
       </div>

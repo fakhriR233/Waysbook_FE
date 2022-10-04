@@ -1,5 +1,5 @@
 import { Alert } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import BookTopCard from "../../components/BookDetail/BookTopCard";
@@ -20,6 +20,21 @@ const BookDetail = () => {
   let qty = 1;
   let sub = book?.price;
   console.log(sub);
+
+  const [transaction, setTransaction] = useState();
+  const getTrans = async () => {
+    try {
+      let response = await API.get("/transaction-status");
+      setTransaction(response.data.data);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
+    getTrans();
+  }, []);
+  console.log(transaction);
 
   const handleSubmit = useMutation(async (e) => {
     try {
