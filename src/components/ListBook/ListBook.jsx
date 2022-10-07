@@ -8,7 +8,7 @@ const bookImg =
 
 const ListBook = () => {
   const title = "Shop";
-  document.title = "DumbMerch | " + title;
+  document.title = "Waysbook | " + title;
 
   // Fetching product data from database
   let { data: books, refetch } = useQuery("booksCache", async () => {

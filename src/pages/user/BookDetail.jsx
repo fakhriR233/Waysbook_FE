@@ -1,5 +1,6 @@
-// import { Alert } from "flowbite-react";
-import { Alert } from "@material-tailwind/react";
+import { Alert } from "flowbite-react";
+// import { Dialog } from "@headlessui/react";
+// import { Alert } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -9,7 +10,7 @@ import { API } from "../../config/api";
 const BookDetail = () => {
   let { id } = useParams();
   // let Navigate = useNavigate();
-  const [show, setShow] = useState(true);
+  // let [isOpen, setIsOpen] = useState(true);
 
   const [alert, setAlert] = useState(null);
 
@@ -57,28 +58,31 @@ const BookDetail = () => {
       });
 
       await API.post("/cart", body, config);
+
       const success = (
         <Alert
-          color="green"
-          show={show}
-          dismissible={{
-            onClose: () => setShow(false),
+          color="success"
+          onDismiss={function onDismiss() {
+            setAlert(null);
           }}
         >
-          Failed Add to Cart
+          <span>
+            <span className="font-medium">Book Added to Cart!</span>
+          </span>
         </Alert>
       );
       setAlert(success);
     } catch (error) {
       const alert = (
         <Alert
-          color="red"
-          show={show}
-          dismissible={{
-            onClose: () => setShow(false),
+          color="failure"
+          onDismiss={function onDismiss() {
+            setAlert(null);
           }}
         >
-          Failed Add to Cart
+          <span>
+            <span className="font-medium">Failed to Add to Cart!</span>
+          </span>
         </Alert>
       );
       setAlert(alert);

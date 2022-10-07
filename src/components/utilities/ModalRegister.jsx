@@ -7,8 +7,6 @@ import { API } from "../../config/api";
 const ModalRegister = ({ show, setShow, showRegister, setShowRegister }) => {
   //   const handleClose = () => setShow(false);
   const [data, setData] = useState();
-  const title = "Register";
-  document.title = "Waysbook | " + title;
 
   const handleShowLogin = (e) => {
     e.preventDefault();
@@ -56,8 +54,13 @@ const ModalRegister = ({ show, setShow, showRegister, setShowRegister }) => {
 
       if (response.data.code === 200) {
         const alert = (
-          <Alert variant="success" className="py-1">
-            Success
+          <Alert
+            color="success"
+            onDismiss={function onDismiss() {
+              return setMessage(null);
+            }}
+          >
+            <span className="font-medium">Register Success</span>
           </Alert>
         );
         setMessage(alert);

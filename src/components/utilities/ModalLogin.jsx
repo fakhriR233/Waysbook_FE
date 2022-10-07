@@ -12,6 +12,7 @@ const ModalLogin = ({ show, setShow, showRegister, setShowRegister }) => {
 
   const handleAlert = () => {
     setDismiss(true);
+    setMessage(null);
   };
 
   //   const handleRegisterClose = () => setShowRegister(false);
@@ -22,9 +23,6 @@ const ModalLogin = ({ show, setShow, showRegister, setShowRegister }) => {
   };
 
   let Navigate = useNavigate();
-
-  const title = "Login";
-  document.title = "Waysbook | " + title;
 
   const [state, dispatch] = useContext(UserContext);
 
@@ -91,8 +89,10 @@ const ModalLogin = ({ show, setShow, showRegister, setShowRegister }) => {
       }
     } catch (error) {
       const alert = (
-        <Alert variant="danger">
-          <div className="text-xl pt-10 bg-red-500">Login failed</div>
+        <Alert color="failure" show={dismiss} onDismiss={handleAlert}>
+          <span>
+            <span className="font-medium">Login Failed!</span>
+          </span>
         </Alert>
       );
       setMessage(alert);
@@ -102,8 +102,9 @@ const ModalLogin = ({ show, setShow, showRegister, setShowRegister }) => {
 
   return (
     <>
-      {message && message}
+      {message}
       <Modal show={show} onClose={handleClose} size="md">
+        {message}
         <Modal.Body>
           <form onSubmit={(e) => handleSubmit.mutate(e)}>
             <Modal.Header />

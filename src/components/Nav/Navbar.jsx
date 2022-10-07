@@ -54,19 +54,24 @@ const Navbar = ({ isLogin }) => {
     Navigate("/");
   }
 
-  const [dataCart, setDataCart] = useState([]);
+  // const [dataCarts, setDataCarts] = useState([]);
 
-  useEffect(() => {
-    const dataCart = async () => {
-      try {
-        const response = await API.get("/cart-id");
-        setDataCart(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    dataCart();
-  }, [setDataCart]);
+  // useEffect(() => {
+  //   const dataCart = async () => {
+  //     try {
+  //       const response = await API.get("/cart-id");
+  //       setDataCarts(response.data.data?.length);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   dataCart();
+  // }, [setDataCarts]);
+
+  // let cartLength = 0;
+  // dataCarts?.forEach((item) => {
+  //   cartLength += item?.qty;
+  // });
 
   return (
     <div>
@@ -105,19 +110,15 @@ const Navbar = ({ isLogin }) => {
               <>
                 <div className="mr-4 flex">
                   <button onClick={handleCart}>
-                    <div className="my-2 mr-1">
+                    <div className="my-2 mr-5">
                       <FaCartPlus className="text-3xl" />
                     </div>
                   </button>
-                  <div className="mt-2 mr-3 w-4">
+                  {/* <div className="mt-2 mr-3 w-4">
                     <p className="text-xs bg-red-600 text-white rounded-md px-1 font-bold">
-                      {dataCart?.length !== 0 ? (
-                        <>{dataCart?.length}</>
-                      ) : (
-                        <>0</>
-                      )}
+                      {dataCarts}
                     </p>
-                  </div>
+                  </div> */}
                   <Dropdown
                     label={
                       <Avatar

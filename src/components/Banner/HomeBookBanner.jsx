@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -7,8 +7,10 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination } from "swiper";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { API } from "../../config/api";
+// import { Alert } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const exImg =
   "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80";
@@ -16,6 +18,8 @@ const exImg =
 const HomeBookBanner = () => {
   const title = "Home";
   document.title = "Waysbook | " + title;
+  const [alert, setAlert] = useState(null);
+  let Navigate = useNavigate();
 
   // Fetching product data from database
   let { data: book, refetch } = useQuery("bookCache", async () => {
@@ -49,6 +53,76 @@ const HomeBookBanner = () => {
 
     return array;
   }
+
+  // let qty = 1;
+  // let sub = book?.price;
+  // console.log(sub);
+
+  // const [transaction, setTransaction] = useState();
+  // const getTrans = async () => {
+  //   try {
+  //     let response = await API.get("/transaction-status");
+  //     setTransaction(response.data.data);
+  //   } catch (e) {
+  //     console.log(e.message);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getTrans();
+  // }, []);
+  // console.log(transaction);
+
+  // const handleSubmit = useMutation(async (e) => {
+  //   try {
+  //     e.preventDefault();
+
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     };
+
+  //     await API.post("/transaction", config);
+
+  //     const body = JSON.stringify({
+  //       book_id: parseInt(book?.id),
+  //       qty: qty,
+  //       subtotal: sub,
+  //     });
+
+  //     await API.post("/cart", body, config);
+
+  //     const success = (
+  //       <Alert
+  //         color="success"
+  //         onDismiss={function onDismiss() {
+  //           setAlert(null);
+  //         }}
+  //       >
+  //         <span>
+  //           <span className="font-medium">Book Added to Cart!</span>
+  //         </span>
+  //       </Alert>
+  //     );
+  //     setAlert(success);
+  //   } catch (error) {
+  //     const alert = (
+  //       <Alert
+  //         color="failure"
+  //         onDismiss={function onDismiss() {
+  //           setAlert(null);
+  //         }}
+  //       >
+  //         <span>
+  //           <span className="font-medium">Failed to Add to Cart!</span>
+  //         </span>
+  //       </Alert>
+  //     );
+  //     setAlert(alert);
+  //     console.log(error);
+  //   }
+  // });
   return (
     <div>
       {book?.length ? (
@@ -64,9 +138,12 @@ const HomeBookBanner = () => {
           >
             {shuffle(book).map((item, id) => {
               return (
-                <div key={item?.id + 99}>
+                <div key={id + 99}>
                   <SwiperSlide>
-                    <button className="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-200 dark:bg-gray-100 dark:hover:bg-gray-200">
+                    <Link
+                      to={`/book-detail/` + item?.id}
+                      className="flex flex-col h-72 items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-200 dark:bg-gray-100 dark:hover:bg-gray-200"
+                    >
                       <img
                         className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-52 md:rounded-none md:rounded-l-lg"
                         src={item?.thumbnail}
@@ -85,14 +162,8 @@ const HomeBookBanner = () => {
                         <p className="my-2 font-normal text-green-300 dark:text-green-500">
                           Rp. {item?.price}
                         </p>
-                        <button
-                          type="button"
-                          className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium text-sm px-5 py-2.5 mr-2 my-3 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                        >
-                          Add to Cart
-                        </button>
                       </div>
-                    </button>
+                    </Link>
                   </SwiperSlide>
                 </div>
               );
